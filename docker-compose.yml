@@ -7,7 +7,7 @@ services:
     ports:
       - '81:5000'
     links:
-      - mongo
+      - mongo-technqn
   mongo:
     container_name: mongo-technqn
     image: mongo
