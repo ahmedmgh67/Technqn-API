@@ -78,9 +78,9 @@ deleteRequest= function(req, res) {
 };
 // handling the routes
 app.route('/api/requests/:userId')
-  .get(listTransictions)
+  .get(listRequests)
 app.route('/api/requests')
-  .post(createTransiction);
+  .post(createRequest);
 app.route('/api/resuests/:request')
-  .put(updateTransiction)
-  .delete(deleteTransiction);
+  .put(updateRequest)
+  .delete(deleteRequest);
