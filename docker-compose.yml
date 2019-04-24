@@ -8,7 +8,7 @@ services:
       - '80:5000'
     links:
       - technqn-mongo
-  technqn-mongo:
+  mongo:
     container_name: technqn-mongo
     image: mongo
     ports:
