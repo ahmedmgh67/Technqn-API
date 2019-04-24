@@ -1,4 +1,4 @@
-//Technqn
+//hospital management
 var mongoose = require('mongoose');
 var express = require('express'),app = express(), port = 5000;
 var bodyParser = require('body-parser');
@@ -8,10 +8,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // Connect to MongoDB
 mongoose.Promise = global.Promise;
-// Important  :Change for loclahost if you want local 
+// TODO:Change for container 
 mongoose
   .connect(
-    'mongodb://technqn-mongo:27017/technqn-api',
+    'mongodb://mongo:27017/hasel',
     { useNewUrlParser: true }
   )
   .then(() => console.log('MongoDB Connected'))
@@ -19,20 +19,24 @@ mongoose
 //starting the app
 app.listen(
   port, () => console.log(
-    'Technqn RESTful API server started on: ' + port
+    'Hasel RESTful API server started on: ' + port
   )
 );
 //schema
-var RequestSchema = new Schema({
+var TransictionSchema = new Schema({
   user:{
     type: String,
     required: true
   },
-  type:{
+  desc:{
     type: String,
     required: false
   },
-  address:{
+  amount:{
+    type: String,
+    required: true
+  },
+  payer:{
     type: String,
     required: true
   },
@@ -40,47 +44,47 @@ var RequestSchema = new Schema({
     type: String,
     default: "Waiting to Open"
   },
-});
-mongoose.model("requests", RequestSchema);
-var Request = mongoose.model("requests");
-listRequests = function(req, res){
-  Request.find({user: req.params.userId}, function(err, requests) {
+})
+mongoose.model("transictions", TransictionSchema);
+var Transiction = mongoose.model("transictions");
+listTransictions = function(req, res){
+  Transiction.find({user: req.params.userId}, function(err, transictions) {
     if (err)
       res.send(err);
-    res.json(requests);
+    res.json(transictions);
   });
 }
-createRequest= function(req, res) {
-  var newRequest = new Request(req.body);
-  newRequest.save(function(err, requests) {
+createTransiction= function(req, res) {
+  var newTransiction = new Transiction(req.body);
+  newTransiction.save(function(err, transiction) {
     if (err)
       res.send(err);
-    res.json(requests);
+    res.json(transiction);
   });
 };
 
-updateRequest = function(req, res) {
-  Request.findOneAndUpdate({_id: req.params.request}, req.body, {new: true}, function(err, request) {
+updateTransiction = function(req, res) {
+  Transiction.findOneAndUpdate({_id: req.params.transiction}, req.body, {new: true}, function(err, transiction) {
     if (err)
       res.send(err);
-    res.json(request);
+    res.json(transiction);
   });
 };
 
-deleteRequest= function(req, res) {
-  Request.remove({
-    _id: req.params.request
+deleteTransiction = function(req, res) {
+  Post.remove({
+    _id: req.params.transiction
   }, function(err, task) {
     if (err)
       res.send(err);
-    res.json({ message: 'Request successfully deleted' });
+    res.json({ message: 'Transiction successfully deleted' });
   });
 };
 // handling the routes
-app.route('/api/requests/:userId')
-  .get(listRequests)
-app.route('/api/requests')
-  .post(createRequest);
-app.route('/api/resuests/:request')
-  .put(updateRequest)
-  .delete(deleteRequest);
+app.route('/api/transictions/:userId')
+  .get(listTransictions)
+app.route('/api/transictions')
+  .post(createTransiction);
+app.route('/api/transitions/:transiction')
+  .put(updateTransiction)
+  .delete(deleteTransiction);
