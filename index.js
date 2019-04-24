@@ -11,7 +11,7 @@ mongoose.Promise = global.Promise;
 // Important  :Change for loclahost if you want local 
 mongoose
   .connect(
-    'mongodb://technqn-mongo:27017/technqn-api',
+    'mongodb://mongo:27017/technqn-api',
     { useNewUrlParser: true }
   )
   .then(() => console.log('MongoDB Connected'))
