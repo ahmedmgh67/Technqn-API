@@ -5,11 +5,11 @@ services:
     restart: always
     build: .
     ports:
-      - '81:5000'
+      - '80:5000'
     links:
-      - mongo-technqn
-  mongo-technqn:
-    container_name: mongo-technqn
+      - mongo
+  mongo:
+    container_name: mongo
     image: mongo
     ports:
       - '27017:27017'
