@@ -110,7 +110,7 @@ UserSchema.plugin(uniqueValidator);
 mongoose.model("users", UserSchema);
 var User = mongoose.model("users");
 login = function(req, res) {
-  USer.find({email: req.body.email, password: req.body.password}, function(err, requests) {
+  User.find({email: req.body.email, password: req.body.password}, function(err, requests) {
     if (err)
       res.send(err);
     res.json(requests);
