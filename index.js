@@ -40,6 +40,10 @@ var RequestSchema = new Schema({
     type: String,
     default: "Waiting to Open"
   },
+  date:{
+    type: Date,
+    default: Date.now
+  }
 });
 mongoose.model("requests", RequestSchema);
 var Request = mongoose.model("requests");
