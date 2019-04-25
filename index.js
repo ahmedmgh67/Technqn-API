@@ -2,6 +2,7 @@
 var mongoose = require('mongoose');
 var express = require('express'),app = express(), port = 5000;
 var bodyParser = require('body-parser');
+var uniqueValidator = require('mongoose-unique-validator');
 var Schema = mongoose.Schema;
 //middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -39,7 +40,7 @@ var RequestSchema = new Schema({
     type: String,
     default: "Waiting to Open"
   },
-})
+});
 mongoose.model("requests", RequestSchema);
 var Request = mongoose.model("requests");
 listRequests = function(req, res){
@@ -65,7 +66,6 @@ updateRequest = function(req, res) {
     res.json(request);
   });
 };
-
 deleteRequest = function(req, res) {
   Request.remove({
     _id: req.params.request
@@ -75,6 +75,7 @@ deleteRequest = function(req, res) {
     res.json({ message: 'Request successfully deleted' });
   });
 };
+
 // handling the routes
 app.route('/api/requests/:userId')
   .get(listRequests)
@@ -83,3 +84,47 @@ app.route('/api/requests')
 app.route('/api/requests/:request')
   .put(updateRequest)
   .delete(deleteRequest);
+
+//the user
+//schema
+var UserSchema = new Schema({
+  name:{
+    type: String,
+    required: true
+  },
+  email:{
+    type: String,
+    required: true,
+    unique: true
+  },
+  password:{
+    type: String,
+    required: true
+  },
+  address:{
+    type: [{type: String}],
+    required: false
+  },
+});
+UserSchema.plugin(uniqueValidator);
+mongoose.model("users", UserSchema);
+var User = mongoose.model("users");
+login = function(req, res) {
+  USer.find({email: req.body.email, password: req.body.password}, function(err, requests) {
+    if (err)
+      res.send(err);
+    res.json(requests);
+  });
+};
+register = function(req, res) {
+  var newUser = new User(req.body);
+  newUser.save(function(err, request) {
+    if (err)
+      res.send(err);
+    res.json(request);
+  });
+};
+app.route("/api/login")
+  .post(login)
+app.route("/api/register")
+  .post(register)
