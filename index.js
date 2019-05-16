@@ -54,6 +54,13 @@ listRequests = function(req, res){
     res.json(requests);
   });
 }
+listAllRequests = function(req, res){
+  Request.find({}, function(err, requests) {
+    if (err)
+      res.send(err);
+    res.json(requests);
+  });
+}
 createRequest= function(req, res) {
   var newRequest = new Request(req.body);
   newRequest.save(function(err, request) {
@@ -84,7 +91,8 @@ deleteRequest = function(req, res) {
 app.route('/api/requests/:userId')
   .get(listRequests)
 app.route('/api/requests')
-  .post(createRequest);
+  .post(createRequest)
+  .get(listAllRequests);
 app.route('/api/requests/:request')
   .put(updateRequest)
   .delete(deleteRequest);
