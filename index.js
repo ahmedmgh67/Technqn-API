@@ -30,7 +30,7 @@ var RequestSchema = new Schema({
   },
   type:{
     type: String,
-    required: false
+    required: true
   },
   address:{
     type: String,
